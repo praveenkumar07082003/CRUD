@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__title-section">
+                    <h1 class="header__title">Employee Management System</h1>
+                    <p class="header__subtitle">Manage your workforce efficiently</p>
+                </div>
+                <div class="header__actions">
+                    <button class="btn btn--outline btn--sm" id="themeToggle" aria-label="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="btn btn--outline btn--sm" id="exportBtn">
+                        <span class="btn-icon">📊</span>
+                        Export
+                    </button>
+                    <button class="btn btn--primary" id="addEmployeeBtn">
+                        <span class="btn-icon">➕</span>
+                        Add Employee
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Search and Filters Section -->
+            <div class="search-section">
+                <div class="search-controls">
+                    <div class="search-input-group">
+                        <input 
+                            type="text" 
+                            class="form-control search-input" 
+                            id="searchInput" 
+                            placeholder="Search employees by name, email..."
