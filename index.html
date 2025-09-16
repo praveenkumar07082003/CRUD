@@ -46,3 +46,202 @@
                             class="form-control search-input" 
                             id="searchInput" 
                             placeholder="Search employees by name, email..."
+                             aria-label="Search employees"
+                        >
+                        <button class="search-clear-btn hidden" id="searchClearBtn" aria-label="Clear search">✕</button>
+                    </div>
+                    <select class="form-control sort-select" id="sortSelect" aria-label="Sort employees">
+                        <option value="name">Sort by Name</option>
+                        <option value="age">Sort by Age</option>
+                        <option value="dateOfJoining">Sort by Join Date</option>
+                        <option value="email">Sort by Email</option>
+                    </select>
+                </div>
+                <div class="results-info">
+                    <span id="resultsCount">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Employee List Section -->
+            <div class="employee-list-section">
+                <div class="employee-list" id="employeeList">
+                    <!-- Loading state -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="loading-spinner"></div>
+                        <p>Loading employees...</p>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-section hidden" id="paginationSection">
+                    <div class="pagination">
+                        <button class="btn btn--outline btn--sm" id="prevPageBtn" disabled>Previous</button>
+                        <span class="pagination-info">
+                            Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                        </span>
+                        <button class="btn btn--outline btn--sm" id="nextPageBtn" disabled>Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state hidden" id="emptyState">
+                <div class="empty-state__content">
+                    <div class="empty-state__icon">👥</div>
+                    <h3>No employees found</h3>
+                    <p>Get started by adding your first employee to the system.</p>
+                    <button class="btn btn--primary" onclick="openAddModal()">Add First Employee</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Employee Modal -->
+    <div class="modal hidden" id="employeeModal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal__backdrop" onclick="closeModal()"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title" id="modalTitle">Add New Employee</h2>
+                <button class="modal__close" onclick="closeModal()" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal__body">
+                <form id="employeeForm" novalidate>
+                    <div class="form-group">
+                        <label for="employeeName" class="form-label">Full Name *</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="employeeName" 
+                            name="name" 
+                            required
+                            maxlength="50"
+                            aria-describedby="nameError"
+                        >
+                        <div class="form-error hidden" id="nameError"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employeeAge" class="form-label">Age *</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="employeeAge" 
+                                name="age" 
+                                required
+                                min="18"
+                                max="65"
+                                aria-describedby="ageError"
+                            >
+                            <div class="form-error hidden" id="ageError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employeeDateOfJoining" class="form-label">Date of Joining *</label>
+                            <input 
+                                type="date" 
+                                class="form-control" 
+                                id="employeeDateOfJoining" 
+                                name="dateOfJoining" 
+                                required
+                                aria-describedby="dateError"
+                            >
+                            <div class="form-error hidden" id="dateError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employeeEmail" class="form-label">Email Address *</label>
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            id="employeeEmail" 
+                            name="email" 
+                            required
+                            aria-describedby="emailError"
+                        >
+                        <div class="form-error hidden" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employeePhone" class="form-label">Phone Number *</label>
+                        <input 
+                            type="tel" 
+                            class="form-control" 
+                            id="employeePhone" 
+                            name="phoneNumber" 
+                            required
+                            placeholder="+1-555-0123"
+                            aria-describedby="phoneError"
+                        >
+                        <div class="form-error hidden" id="phoneError"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn btn--outline" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn--primary" id="submitBtn" form="employeeForm">
+                    <span class="btn-text">Add Employee</span>
+                    <div class="btn-spinner hidden"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal hidden" id="deleteModal" role="dialog" aria-labelledby="deleteTitle" aria-hidden="true">
+        <div class="modal__backdrop" onclick="closeDeleteModal()"></div>
+        <div class="modal__content modal__content--small">
+            <div class="modal__header">
+                <h2 class="modal__title" id="deleteTitle">Confirm Deletion</h2>
+                <button class="modal__close" onclick="closeDeleteModal()" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal__body">
+                <p>Are you sure you want to delete <strong id="deleteEmployeeName">this employee</strong>?</p>
+                <p class="text-secondary">This action cannot be undone.</p>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn btn--outline" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn--primary btn--danger" id="confirmDeleteBtn">
+                    Delete Employee
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options Modal -->
+    <div class="modal hidden" id="exportModal" role="dialog" aria-labelledby="exportTitle" aria-hidden="true">
+        <div class="modal__backdrop" onclick="closeExportModal()"></div>
+        <div class="modal__content modal__content--small">
+            <div class="modal__header">
+                <h2 class="modal__title" id="exportTitle">Export Employee Data</h2>
+                <button class="modal__close" onclick="closeExportModal()" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal__body">
+                <p>Choose your preferred export format:</p>
+                <div class="export-options">
+                    <button class="btn btn--outline btn--full-width export-option" onclick="exportData('csv')">
+                        <span class="btn-icon">📊</span>
+                        Export as CSV
+                    </button>
+                    <button class="btn btn--outline btn--full-width export-option" onclick="exportData('json')">
+                        <span class="btn-icon">📄</span>
+                        Export as JSON
+                    </button>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn btn--outline" onclick="closeExportModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer">
+        <!-- Toast notifications will be dynamically inserted here -->
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
